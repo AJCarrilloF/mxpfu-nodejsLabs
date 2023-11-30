@@ -26,13 +26,23 @@ let users = [
 // GET request: Retrieve all users
 router.get("/",(req,res)=>{
   // Copy the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+
+  res.send(users);
+  //res.send("Yet to be implemented")//This line is to be replaced with actual return value
 });
 
 // GET by specific ID request: Retrieve a single user with email ID
 router.get("/:email",(req,res)=>{
   // Copy the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+
+  var found = users.filter((user)=> user.email === req.params.email);
+  if (found.length>0){
+    res.send(found[0]);
+  }else{
+    res.send("No se encontraron resultados");
+  }
+
+  //res.send("Yet to be implemented")//This line is to be replaced with actual return value
 });
 
 
@@ -46,7 +56,34 @@ router.post("/",(req,res)=>{
 // PUT request: Update the details of a user by email ID
 router.put("/:email", (req, res) => {
   // Copy the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  let DOB       = req.query.DOB;
+  let firstName = req.query.firstName;
+  let lastName  = req.query.lastName;
+  let toUpd;
+  let found = users.filter((user)=> user.email != req.params.email);
+  if (found.length>0){
+
+    toUpd = found[0];
+    if(firstName){
+      toUpd.firstName = firstName;
+    }
+    if(DOB){
+      toUpd.dob = DOB;
+    }
+    if(lastName){
+      toUpd.lastName = lastName;
+    }
+    users = users.filter((user) => user.email != email);
+    users.push(toUpd);
+    console.log(toUpd);
+    console.log(users);
+    res.send( `User with the email ${email} updated.`)
+
+  }else{
+    res.send("No se encontraron resultados");
+  }
+
+  //res.send("Yet to be implemented")//This line is to be replaced with actual return value
 });
 
 
